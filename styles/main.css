@@ -56,6 +56,7 @@ body {
 }
 
 .links-container .navbar-link:hover {
+    transition: color 1s ease-out;
      color: rgb(233,50,117);
  }
 
