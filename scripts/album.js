@@ -81,29 +81,22 @@ var setCurrentAlbum = function(album) {
      }
  };
  
- window.onload = function() {
+ function loadMyAlbums() {
      
      setCurrentAlbum(albumMarconi);
-     
-
-    
      var albumArray = [albumPicasso, album21Pilots, albumMarconi];
-
      var i = 0;
      
-     var cycleAlbums; /* = function(event) {
+     var cycleAlbums  = function() {
         setCurrentAlbum(albumArray[i]);    
         i++;
         if ( i == albumArray.length) { i = 0;}
-        } 
-      */
+        }; 
+      
+     albumImage.addEventListener('click', cycleAlbums);
 
-     albumImage.addEventListener('click', function(event) {
-        setCurrentAlbum(albumArray[i]);    
-        i++;
-        if ( i == albumArray.length) { i = 0;}
-        });
-     
-};
+}
+
+window.onload = loadMyAlbums();
 
 
