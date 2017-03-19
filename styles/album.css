@@ -77,6 +77,11 @@
      background-color: rgb(210, 40, 123);
 }
 
+.album-view-song-item:active .album-song-button {
+     color: white;
+     background-color: rgb(210, 40, 123);
+}
+
 .album-song-button span {
     line-height: 28px;
 }
