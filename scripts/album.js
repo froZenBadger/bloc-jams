@@ -94,47 +94,62 @@ var trackIndex = function(album, song) {
     return album.songs.indexOf(song);
 };
 
-var nextSong = function() {
-    var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
-    currentSongIndex++;
-    if (currentSongIndex >= currentAlbum.songs.length) {
-        currentSongIndex = 0;
+var changeSong = function(direction) {
+    
+    var nextSong = function() {
+        var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
+        currentSongIndex++;
+        if (currentSongIndex >= currentAlbum.songs.length) {
+            currentSongIndex = 0;
+        }
+
+        var lastSongNumber = currentlyPlayingSongNumber; 
+
+        currentlyPlayingSongNumber = currentSongIndex + 1;
+        currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
+
+        updatePlayerBarSong();
+
+        var $nextSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+        var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
+
+        $nextSongNumberCell.html(pauseButtonTemplate);
+        $lastSongNumberCell.html(lastSongNumber);
+    };
+    
+    var previousSong = function() {
+        var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
+        currentSongIndex--;
+        if (currentSongIndex < 0) {
+            currentSongIndex = (currentAlbum.songs.length - 1);
+        }
+
+        var lastSongNumber = currentlyPlayingSongNumber; 
+
+        currentlyPlayingSongNumber = currentSongIndex + 1;
+        currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
+
+        updatePlayerBarSong();
+
+        var $nextSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+        var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
+
+        $nextSongNumberCell.html(pauseButtonTemplate);
+        $lastSongNumberCell.html(lastSongNumber);
+    };
+    
+    if (direction == 'next') { 
+        nextSong();
+    }  else {
+        console.log('Need to specify direction!');
     }
-    
-    var lastSongNumber = currentlyPlayingSongNumber; 
-    
-    currentlyPlayingSongNumber = currentSongIndex + 1;
-    currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
-    
-    updatePlayerBarSong();
-    
-    var $nextSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
-    var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
-    
-    $nextSongNumberCell.html(pauseButtonTemplate);
-    $lastSongNumberCell.html(lastSongNumber);
+    if (direction == 'previous') {
+        previousSong();
+    } else {
+        console.log('Need to specify direction!');
+    }
 };
 
-var previousSong = function() {
-    var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
-    currentSongIndex--;
-    if (currentSongIndex < 0) {
-        currentSongIndex = (currentAlbum.songs.length - 1);
-    }
-    
-    var lastSongNumber = currentlyPlayingSongNumber; 
-    
-    currentlyPlayingSongNumber = currentSongIndex + 1;
-    currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
-    
-    updatePlayerBarSong();
-    
-    var $nextSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
-    var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
-    
-    $nextSongNumberCell.html(pauseButtonTemplate);
-    $lastSongNumberCell.html(lastSongNumber);
-};
 
 var updatePlayerBarSong = function() {
     $('h2.song-name').text(currentSongFromAlbum.title);
@@ -171,7 +186,11 @@ var $playButton = $('.main-controls .play-pause');
 
 $(document).ready(function() {
     setCurrentAlbum(albumMarconi);
-    $previousButton.click(previousSong);
-    $nextButton.click(nextSong);
+    $previousButton.click(function() {
+        changeSong('previous');
+    });
+    $nextButton.click(function() {
+        changeSong('next');
+    });
     $playButton.click(pauseSong);   
  });
